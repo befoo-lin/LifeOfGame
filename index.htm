@@ -10,7 +10,7 @@
 </head>
 <body>
   <canvas id="_Canvas" width="800" height="400"></canvas>
-  <img id="frogImg" src="./Canvas Example_files/frog.png" alt="Source Image" style="display:none;">
+  <img id="frogImg" src="./index_files/frog.png" alt="Source Image" style="display:none;">
 
 
 <script>
@@ -19,7 +19,8 @@
 // Class DrawTool
 //======================================================
 class DrawTool {
-   
+   x = 50 ;
+   y = 50 ;
    constructor() {
    }
    
@@ -28,8 +29,12 @@ class DrawTool {
       ctx.beginPath();
 
       // 设置线条的起点和终点坐标，并绘制直线
-      ctx.moveTo(50, 50);   // 起点坐标 (50, 50)
-      ctx.lineTo(200, 50); // 终点坐标 (200, 200)
+      ctx.moveTo(this.x, this.y);   // 起点坐标 (50, 50)
+      ctx.lineTo(this.x+150, this.y); // 终点坐标 (200, 200)
+      this.y+=10;
+      if ( this.y > canvas.height ) {
+        this.y = 50 ;
+      }
 
       // 设置线条样式（颜色、宽度等）
       ctx.strokeStyle = 'blue'; // 线条颜色为蓝色
@@ -43,10 +48,6 @@ class DrawTool {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
    }
 
-   drawFrog(x,y) {
-      let img = document.getElementById('frogImg');
-	   ctx.drawImage(img, x, y); // x 和 y 是图片在 Canvas 上的位置坐标
-   }
 }   
 
 //======================================================
