@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)file:///G:/My%20Drive/Develop/Learning/LifeOfGame/jsCanvas.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>Canvas Example</title>
+  <!--<script src="./script.js" defer></script>-->
+  <style>
+    canvas { border: 1px solid #000; }
+  </style>
+</head>
+<body>
+  <canvas id="_Canvas" width="800" height="400"></canvas>
+  <img id="frogImg" src="./Canvas Example_files/frog.png" alt="Source Image" style="display:none;">
+
+
+<script>
+
+//======================================================
+// Class DrawTool
+//======================================================
+class DrawTool {
+   
+   constructor() {
+   }
+   
+   drawBG() {
+      // 开始绘制路径
+      ctx.beginPath();
+
+      // 设置线条的起点和终点坐标，并绘制直线
+      ctx.moveTo(50, 50);   // 起点坐标 (50, 50)
+      ctx.lineTo(200, 50); // 终点坐标 (200, 200)
+
+      // 设置线条样式（颜色、宽度等）
+      ctx.strokeStyle = 'blue'; // 线条颜色为蓝色
+      ctx.lineWidth = 2;        // 线条宽度为2像素
+
+      // 绘制线条
+      ctx.stroke();	
+   }  
+
+   clear() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+   }
+
+   drawFrog(x,y) {
+      let img = document.getElementById('frogImg');
+	   ctx.drawImage(img, x, y); // x 和 y 是图片在 Canvas 上的位置坐标
+   }
+}   
+
+//======================================================
+// Class Frog
+//======================================================
+class Frog {
+   x = 100
+   y = 100
+   constructor() {
+      document.addEventListener('keydown', function(event) {
+         switch(event.key) {
+            case 'ArrowUp':
+                  console.log('Up arrow key pressed.');
+                  this.y=this.y-10;
+                  break;
+            case 'ArrowDown':
+                  console.log('Down arrow key pressed.');
+                  this.y=this.y+10;
+                  break;
+            case 'ArrowLeft':
+                  console.log('Left arrow key pressed.');
+                  this.x=this.x-10;
+                  break;
+            case 'ArrowRight':
+                  console.log('Right arrow key pressed.');
+                  this.x=this.x+10;
+                  break;
+            default:
+                  // 处理其他按键
+                  break;
+         }
+      }.bind(this));
+   }
+
+   drawFrog2() {
+      let img = document.getElementById('frogImg');
+	   ctx.drawImage(img, this.x, this.y ); // x 和 y 是图片在 Canvas 上的位置坐标
+   }
+   
+   drawFrog(x,y) {
+      let img = document.getElementById('frogImg');
+	   ctx.drawImage(img, x, y); // x 和 y 是图片在 Canvas 上的位置坐标
+   }
+}   
+
+//======================================================
+// Class Game
+//======================================================
+class Game {
+   drawTool = new DrawTool() ;
+   frog = new Frog() ;
+
+   paint() {
+      this.drawTool.clear();
+      this.drawTool.drawBG() ;
+      this.frog.drawFrog2() ;
+   }
+}
+
+//======================================================
+// Class Animate
+//======================================================
+class Animate {
+   animationRunning = true;
+   game = new Game();
+   lastTimestamp = Date.now();
+
+   update() {
+      if (!this.animationRunning) {
+         return; // 停止动画
+      }
+
+      //if ( Date.now() - lastTimestamp > 500 )
+      this.game.paint();
+
+      // 请求下一帧动画
+      requestAnimationFrame(this.update.bind(this));
+   }
+
+   start() {
+      this.animationRunning = true ;
+      requestAnimationFrame(this.update.bind(this));
+   }
+
+   stop() {
+      this.animationRunning = false ;
+   }
+
+}
+//======================================================
+//======================================================
+
+const canvas = document.getElementById('_Canvas');
+const ctx = canvas.getContext('2d');
+
+const animate = new Animate() ;
+animate.start() ;
+
+
+
+
+
+</script> </body></html>
